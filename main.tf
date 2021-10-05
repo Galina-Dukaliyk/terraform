@@ -23,7 +23,6 @@ resource "google_compute_address" "static" {
 resource "google_compute_subnetwork" "petclinic-subnet-tf-eu-west1" {
   name          = "petclinic-subnet-tf-eu-west1"
   ip_cidr_range = "10.24.5.0/24"
-  region        = "europe-west1"
   network       = google_compute_network.petclinic-vpc-tf.id
 }
 

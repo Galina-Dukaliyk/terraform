@@ -8,5 +8,5 @@ terraform {
 }
 provider "google" {
   project = "gcp-2021-2-phase2-dykaliuk"
-  region  = "europe-west1"
+  region  = var.my_region
 }
