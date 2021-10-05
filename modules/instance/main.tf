@@ -14,10 +14,10 @@ resource "google_compute_instance" "petclinic-app-tf" {
     }
   }
   network_interface {
-    network = "default"
+    network = var.network_name
 
     access_config {
-      nat_ip = google_compute_address.static.address
+      nat_ip = var.static_ip_addr
     }
   }
 }

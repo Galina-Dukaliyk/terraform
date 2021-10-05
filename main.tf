@@ -1,10 +1,21 @@
 module "gce_instance" {
-  source       = "./modules/instance"
-  my_zone      = "${var.my_region}-b"
-  my_image     = "petclinic-instance-image-v2"
-  my_inst_name = "petclinic-app-tf"
-  mach_type    = "n1-standard-1"
+  source         = "./modules/instance"
+  my_zone        = "${var.my_region}-b"
+  my_image       = "petclinic-instance-image-v2"
+  my_inst_name   = "petclinic-app-tf"
+  mach_type      = "n1-standard-1"
+  static_ip_addr = module.network.static_ip
+  network_name   = module.network.network_name
 }
+
+module "network" {
+  source         = "./modules/network"
+  static_ip_name = "petclinic-public-ip-tf"
+  name_vpc       = "petclinic-vpc-tf"
+  my_subnet      = "petclinic-subnet-tf-eu-west1"
+  ip_range       = "10.24.5.0/24"
+}
+
 
 
 resource "google_compute_instance" "petclinic-app-tf" {
