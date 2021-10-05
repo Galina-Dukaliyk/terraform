@@ -7,6 +7,7 @@ module "gce_instance" {
   mach_type      = "n1-standard-1"
   static_ip_addr = module.network.static_ip
   network_name   = module.network.network_name
+  my_subnet      = "petclinic-subnet-tf-eu-west1"
 }
 
 module "network" {

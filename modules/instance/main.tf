@@ -14,7 +14,8 @@ resource "google_compute_instance" "petclinic-app-tf" {
     }
   }
   network_interface {
-    network = var.network_name
+    network    = var.network_name
+    subnetwork = var.my_subnet
 
     access_config {
       nat_ip = var.static_ip_addr
