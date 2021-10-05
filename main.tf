@@ -34,7 +34,7 @@ resource "google_compute_network" "petclinic-vpc-tf" {
 
 resource "google_compute_firewall" "ssh_rule" {
   name    = "petclinic-allow-ssh-tf"
-  network = google_compute_network.petclinic-vpc-tf.name
+  network = google_compute_network.petclinic-vpc-tf.id
 
   allow {
     protocol = "tcp"
@@ -46,7 +46,7 @@ resource "google_compute_firewall" "ssh_rule" {
 
 resource "google_compute_firewall" "http_rule" {
   name    = "petclinic-allow-http-tf"
-  network = google_compute_network.petclinic-vpc-tf.name
+  network = google_compute_network.petclinic-vpc-tf.id
 
   allow {
     protocol = "tcp"
