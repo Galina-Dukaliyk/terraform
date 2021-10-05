@@ -1,21 +1,23 @@
-# resource "google_compute_instance" "instance1" {
-#   name         = "instance1"
-#   machine_type = "f1-micro"
-#   zone         = "europe-west1-b"
-#
-#   boot_disk {
-#     initialize_params {
-#       image = "debian-cloud/debian-9"
-#     }
-#   }
-#   network_interface {
-#     network = "default"
-#
-#     access_config {
-#       nat_ip = google_compute_address.static.address
-#     }
-#   }
-# }
+resource "google_compute_instance" "petclinic-app-tf" {
+  name                      = "petclinic-app-tf"
+  machine_type              = "n1-standard-1"
+  zone                      = "${var.my_region}-b"
+  tags                      = ["ssh", "web"]
+  allow_stopping_for_update = true
+
+  boot_disk {
+    initialize_params {
+      image = data.google_compute_image.petclinic_image.self_link
+    }
+  }
+  network_interface {
+    network = "default"
+
+    access_config {
+      nat_ip = google_compute_address.static.address
+    }
+  }
+}
 resource "google_compute_address" "static" {
   name = "petclinic-public-ip-tf"
 }
@@ -53,4 +55,7 @@ resource "google_compute_firewall" "http_rule" {
   }
   target_tags   = ["web"]
   source_ranges = ["0.0.0.0/0"]
+}
+data "google_compute_image" "petclinic_image" {
+  name = "petclinic-instance-image-v2"
 }
