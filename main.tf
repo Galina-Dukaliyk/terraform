@@ -1,3 +1,12 @@
+module "gce_instance" {
+  source       = "./modules/instance"
+  my_zone      = "${var.my_region}-b"
+  my_image     = "petclinic-instance-image-v2"
+  my_inst_name = "petclinic-app-tf"
+  mach_type    = "n1-standard-1"
+}
+
+
 resource "google_compute_instance" "petclinic-app-tf" {
   name                      = "petclinic-app-tf"
   machine_type              = "n1-standard-1"
