@@ -1,3 +1,7 @@
+resource "random_id" "db_name_suffix" {
+  byte_length = 5
+}
+
 module "gce_instance" {
   source         = "./modules/instance"
   my_zone        = "${var.my_region}-b"
@@ -16,6 +20,7 @@ module "network" {
   name_vpc       = "petclinic-vpc-tf"
   my_subnet      = "petclinic-subnet-tf-eu-west1"
   ip_range       = "10.24.5.0/24"
+  private_ip     = "private-ip-address"
 }
 
 module "firewall_ssh" {
@@ -36,6 +41,19 @@ module "firewall_web" {
   port          = ["8080"]
   tag           = ["web"]
   ranges_source = ["0.0.0.0/0"]
+}
+
+module "sql" {
+  source            = "./modules/sql"
+  db_version        = "MYSQL_5_7"
+  db_instance_name  = "petclinic-db-tf-${random_id.db_name_suffix.dec}"
+  my_region         = var.my_region
+  machine_type      = "db-n1-standard-2"
+  my_network        = module.network.network_name
+  database_sql_name = "petclinic"
+  db_user_name      = "petclinic"
+  db_user_password  = var.db_user_pswd
+  depends_on        = [module.network]
 }
 
 
