@@ -7,6 +7,10 @@ resource "google_compute_instance" "petclinic-app-tf" {
   zone                      = var.my_zone
   tags                      = var.instance_tag
   allow_stopping_for_update = true
+  service_account {
+    email  = var.name_serv_account
+    scopes = ["cloud-platform"]
+  }
 
   boot_disk {
     initialize_params {

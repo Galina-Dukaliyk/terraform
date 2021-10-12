@@ -3,15 +3,17 @@ resource "random_id" "db_name_suffix" {
 }
 
 module "gce_instance" {
-  source         = "./modules/instance"
-  my_zone        = "${var.my_region}-b"
-  instance_tag   = ["ssh", "web"]
-  my_image       = "petclinic-instance-image-v2"
-  my_inst_name   = "petclinic-app-tf"
-  mach_type      = "n1-standard-1"
-  static_ip_addr = module.network.static_ip
-  network_name   = module.network.network_name
-  my_subnet      = "petclinic-subnet-tf-eu-west1"
+  source            = "./modules/instance"
+  my_zone           = "${var.my_region}-b"
+  instance_tag      = ["ssh", "web"]
+  my_image          = "petclinic-instance-image-v2"
+  my_inst_name      = "petclinic-app-tf"
+  mach_type         = "n1-standard-1"
+  static_ip_addr    = module.network.static_ip
+  network_name      = module.network.network_name
+  my_subnet         = "petclinic-subnet-tf-eu-west1"
+  name_serv_account = module.serv_account.gce_inctance_service_account
+  depends_on        = [module.network]
 }
 
 module "network" {
@@ -54,6 +56,11 @@ module "sql" {
   db_user_name      = "petclinic"
   db_user_password  = var.db_user_pswd
   depends_on        = [module.network]
+}
+
+module "serv_account" {
+  source                  = "./modules/serv_account"
+  instance_servaccount_id = "petclinic-sql-user"
 }
 
 

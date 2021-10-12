@@ -8,3 +8,4 @@ variable "mach_type" {}
 variable "static_ip_addr" {}
 variable "network_name" {}
 variable "my_subnet" {}
+variable "name_serv_account" {}
